@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme = 'light'>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <link rel="stylesheet" href="style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+        <title>Together</title>
+    </head>
+  <body>
+    <main class="App" id="app">
+<div class="main-container">
+
+
+        <!-- Create Post Page -->
+
+
+        <div class="create_post_page" id="Create_Modal">
+            <div class="postPage_box">
+                <div class="postPage_close">
+                    <span>Create post</span>
+                    <div id="close_modal">
+                    <i class="fa-solid fa-xmark"></i>
+                    </div>
+                </div>
+                <div class="postPage_profile">
+                    <div class="postPage_dp">
+                        <img class="user_image" src="https://wbgkzxqsuoxtflazvifg.supabase.co/storage/v1/object/public/blog-image/profile/1740601312730_RAFAEL%20MILLER%20INTERVIEW%20+%20COVER%20STORY.jpg" alt="">
+                    </div>
+                    <span class="postPage_name user_infoName" >Shahmeer Rabbani</span>
+                </div>
+                <div class="Postpage_input">
+                    <textarea name="" id="post_desc" cols="30" rows="3" placeholder="What's on your mind?"></textarea>
+                    <span><i class="fa-regular fa-face-smile"></i></span>
+                </div>
+
+                <div class="upload-container" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" accept="jpeg/*,jpg/*" style="display: none;" id="fileInput">
+                    <img id="image_preview">
+                   <div class="fly_abs">
+                    <div class="upload-icon">
+                        <i class="fa-solid fa-file-circle-plus"></i>
+                    </div>
+                    <div class="upload-text">Add photos/videos</div>
+                    <div class="upload-subtext">or drag and drop</div>
+                   </div>
+                </div>
+
+                <button class="post_btn" onclick="handleCreatePost()">Post</button>
+            </div>
+        </div>
+
+
+
+<!-- Navbar -->
+
+      <nav class="navbar">
+        <div class="nav_first">
+            <div class="app_logo">
+                <span>TOGETHER</span>
+            </div>
+            <div class="app_search">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search">
+            </div>
+        </div>
+
+        <div class="nav_second">
+            <span>
+                <i class="fa-solid fa-house"></i>
+            </span>
+            <span>
+                <i class="fa-regular fa-compass"></i>
+            </span>
+            <span>
+                <i class="fa-regular fa-comment-dots"></i>
+            </span>
+            <span>
+                <i class="fa-regular fa-bell"></i>
+            </span>
+            <span>
+                <i class="fa-solid fa-user"></i>
+            </span>
+        </div>
+        <div class="nav_third">
+            <div class="dp_section">
+                <div class="dp">
+                    <img class="user_image" src="./images/me.jpg" alt="">
+                </div>
+                <span class="user_name user_infoName">Shahmeer Rabbani</span>
+            </div>
+            
+            <span class="theme" id="theme"><i id="theme_icon" class="fa-solid fa-moon"></i></span>
+            <button><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+    </nav>
+
+    
+    <div class="content">
+        
+        <!-- left Content -->
+        <div class="left_content">
+            <div class="left_content_header">
+                <div class="cover_pic">
+                    <img src="./images/galaxy.jpeg" alt="">
+                </div>
+                <div class="profile_pic">
+                    <img class="user_image" src="./images/me.jpg" alt="">
+                </div>
+                <p class="profile_name user_infoName"></p>
+                <p class="profile_username" id="bio"></p>
+
+                <div class="page_status">
+                    <div>
+                        <span>250</span>
+                        <span>Posts</span>
+                    </div>
+                    <div>
+                        <span>130</span>
+                        <span>Followers</span>
+                    </div>
+                    <div>
+                        <span>180</span>
+                        <span>Following</span>
+                    </div>
+                </div>
+
+                <button class="Profile_btn">My Profile</button>
+            </div>
+            <div class="left_content_shortcut"></div>
+        </div>
+
+
+
+
+
+
+
+
+<!-- Middle Content -->
+
+        <div class="middle_content">
+            
+            <div class="Share_section">
+                <div class="input_events">
+                    <span class="input_dp">
+                        <img class="user_image" src="./images/me.jpg" alt="">
+                    </span>
+                    <div class="share_input" id="Open_Modal">
+                        <span>Share Something...</span>
+                        <span class="emoji"><i class="fa-regular fa-face-smile"></i></span>
+                    </div>
+                </div>
+                <div class="btn_events">
+                    <div>
+                        <span><i class="fa-solid fa-image"></i></span>
+                        <span>image</span>
+                    </div>
+                    <div>
+                        <span><i class="fa-solid fa-video"></i></span>
+                        <span>video</span>
+                    </div>
+                    <div>
+                        <span><i class="fa-solid fa-square-poll-vertical"></i></span>
+                        <span>Poll</span>
+                    </div>
+                </div>
+            </div>
+            <hr style="margin: 20px 0px;">
+            <div id="post_wrapper">
+                
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+        <!-- Right Content -->
+        <div class="right_content"></div>
+
+      </div>
+      </div>
+    </main>
+    
+</body>
+<script src="./App.js"></script>
+</html>

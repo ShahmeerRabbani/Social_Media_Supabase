@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+        <title>Together</title>
+</head>
+<body>
+    <div class="Info_container">
+        <div class="info_box">
+            <div class="info_heading">
+                <span>Profile setup</span>
+            <p>Upload your Profile information and photo</p>
+            </div>
+            <div class="img_div">
+                <div class="camera" ><i class="fa-solid fa-camera"></i></div>
+                <input type="file" accept="jpeg/*,jpg/*" style="display: none;" id="info_dp" >
+                <div class="image_circle" onclick="document.getElementById('info_dp').click()">
+                    <img id="change_img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3puR9z5lh7UbRRX9EIJkHYQTaLHnnZIQ7dALWbUH1qsgjnuBuZ7GKK7iCh2AGH0fCGVI&usqp=CAU" alt="Profile Picture">
+
+                </div>
+                <a href="#" style="color: #0861f2;"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload a photo</a>
+            </div>
+            <div class="profile_info">
+                <input type="text" name="" id="info_name" placeholder="Full name">
+                <input type="bio" placeholder="Bio" id="info_bio">
+            </div>
+            <p class="info_btn">
+                <button onclick="SetUserInformation()">Save Upload</button>
+            </p>
+        </div>
+    </div>
+    <script src="./App.js"></script>
+</body>
+</html>

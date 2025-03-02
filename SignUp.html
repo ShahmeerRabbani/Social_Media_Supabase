@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="Auth.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <title>Together</title>
+  </head>
+  <body>
+
+    <div class="container">
+        <div class="login-box">
+            <h2>Sign Up</h2>
+            <p>Create an account to get started</p>
+            
+            <form>
+                <div class="input-group">
+                    <input type="text" placeholder="Full Name">
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Email" id="sign-email">
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" id="sign-password">
+                    <span class="eye-icon"><i class="fa-regular fa-eye"></i></span>
+                </div>
+                <button class="login-btn" onclick="handleSignUp(event)">Sign Up</button>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <button class="google-btn">
+                    <img src="https://img.icons8.com/color/16/000000/google-logo.png"/> Sign Up with Google
+                </button>
+
+                <p class="register-text">Already have an account? <a href="index.html" class="register-btn">Login</a></p>
+            </form>
+        </div>
+
+        <div class="image-box">
+            <img src="./images/together.jpg" alt="Gaming Setup">
+        </div>
+    </div>
+
+    <script src="./App.js"></script>
+    </body>
+    </html>
