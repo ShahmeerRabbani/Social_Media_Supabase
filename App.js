@@ -9,7 +9,19 @@ const login_password = document.getElementById("log-pass");
 const Sign_password = document.getElementById("sign-password");
 const Sign_email = document.getElementById("sign-email");
 
+const Logout = async() =>{
+  const { error } = await supabase_Api.auth.signOut()
+  if(error){
+    Swal.fire({
+      title: "Error!",
+      text: error.message,
+      icon: "error"
+  });
+  return;
+}
 
+window.location.href = 'index.html';
+}
 
 // Show password
 function showPasswordSign() {
@@ -58,9 +70,23 @@ const handleLogin = async (event) => {
       return;
     }
 
+    const { data: userProfile, error: profileError } = await supabase_Api
+      .from('user-information')
+      .select('is_login')
+      .eq('user_id', user.id)
+      .single();
+
+      if (profileError) {
+        Swal.fire({
+          title: "Error!",
+          text: profileError.message,
+          icon: "error"
+      });
+      }
+
     localStorage.setItem('userinfo', JSON.stringify(user));
-    const isFirstTime = !localStorage.getItem('hasLoggedInBefore');
-    
+
+    const isFirstTime = !userProfile?.is_login;    
 
     Swal.fire({
       title: "LogIn!",
@@ -68,11 +94,14 @@ const handleLogin = async (event) => {
       icon: "success"
   });
 
-    setTimeout(()=>{
+    setTimeout(async()=>{
 
       
       if (isFirstTime) {
-        localStorage.setItem('hasLoggedInBefore', 'true'); // Mark as logged in
+        await supabase_Api
+        .from('user-information')
+        .update({is_login: true})
+        .eq('user_id', user.id);
         window.location.href = "info.html"; // Redirect to info page
       } else {
         window.location.href = "home.html"; // Redirect to home page
@@ -389,7 +418,7 @@ async function userActive (){
 
   data?.forEach(element => {
      div_element += `
-                    <div class="short_div">
+                    <div class="short_div" data-id='${element.user_id}'>
                       <div>
                           <img src='${element.image_url}' alt="">
                       </div>
@@ -678,7 +707,7 @@ singleUser.forEach((ele)=>{
       text: "Post has been deleted.",
       icon: "success"
     });
-    
+
     modal.style.display = 'none';
 
   }
