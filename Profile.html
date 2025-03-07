@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="Profile_page">
+        <div class="main-container">
+        <nav class="navbar">
+            <div class="nav_first">
+                <div class="app_logo">
+                    <span>TOGETHER</span>
+                </div>
+                <div class="app_search">
+                    <i class="fa fa-search"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+            </div>
+    
+            <div class="nav_second">
+                <span>
+                    <a href="./Home.html">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </span>
+                <span>
+                    <a href="#">
+                        <i class="fa-regular fa-compass"></i>
+                    </a>
+                </span>
+                <span>
+                    <a href="#">
+                        <i class="fa-regular fa-comment-dots"></i>
+                    </a>
+                </span>
+                <span>
+                    <a href="#">
+                        <i class="fa-regular fa-bell"></i>
+                    </a>
+                </span>
+                <span>
+                    <a href="./Profile.html">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                </span>
+            </div>
+            <div class="nav_third">
+                <div class="dp_section">
+                    <div class="dp">
+                        <img class="user_image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3puR9z5lh7UbRRX9EIJkHYQTaLHnnZIQ7dALWbUH1qsgjnuBuZ7GKK7iCh2AGH0fCGVI&usqp=CAU" alt="">
+                    </div>
+                    <span class="user_name user_infoName">Shahmeer Rabbani</span>
+                </div>
+                
+                <span class="theme" id="theme"><i id="theme_icon" class="fa-solid fa-moon"></i></span>
+                <button><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <!-- Your content here -->
+
+
+             <div class="Profile_content">
+
+                <div class="profile_detail_wrapper">
+                    <div class="profile_details">
+                        <div class="profile_cover">
+                            <img src="./images/cover_img.jpg" alt="" id="change_cover_dp">
+                        </div>
+                        <div class="profile_dp">
+                            <img class="user_image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3puR9z5lh7UbRRX9EIJkHYQTaLHnnZIQ7dALWbUH1qsgjnuBuZ7GKK7iCh2AGH0fCGVI&usqp=CAU"alt="">
+                        </div>
+                        <div class="info_wrapper">
+                        <span class="user_profileName" id="user_infoName">
+                            Shahmeer Rabbani
+                        </span>
+                        <p class="profile_bio" id="bio">
+                            Your bio goes here
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+                <div id="ProfileContent_wrapper"></div>
+
+             </div>
+
+
+        </div>
+    </div>
+    </div>
+
+    <script src="./App.js"></script>
+</body>
+</html>

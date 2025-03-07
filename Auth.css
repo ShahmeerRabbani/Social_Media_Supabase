@@ -11,12 +11,15 @@ body{
     align-items: center;
     justify-content: center;
     font-family: Poppins;
+    /* background-color: #111111; */
+    background-position: center;
+    backdrop-filter: blur(10px);
 }
 
 
 .container {
     display: flex;
-    background: #F8FBFF;
+    background: #1A1A1A;
     padding: 30px;
     width: 900px;
     border-radius: 20px;
@@ -31,7 +34,7 @@ body{
   
     & h2 {
       font-weight: 600;
-      color: #333;
+      color: #fff;
     }
   
     & p {
@@ -51,10 +54,11 @@ body{
   
     & input {
       width: 100%;
-      padding: 12px;
+      padding: 15px;
       border-radius: 8px;
-      border: 1px solid #ccc;
-      background: #F0F4FF;
+      border: 1px solid gray;
+      color: #fff;
+      background: #111111;
       outline: none;
       transition: 0.3s;
     }
@@ -73,6 +77,7 @@ body{
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    color: #fff;
   }
   
   .login-btn {
@@ -141,14 +146,18 @@ body{
   .image-box {
     flex: 1;
     display: flex;
+    aspect-ratio: 1;
     align-items: center;
     justify-content: center;
+    filter: grayscale();
   }
   
   .image-box img {
+    height: 100%;
     width: 100%;
     max-width: 350px;
     border-radius: 15px;
+    object-fit: cover;
   }
   
   

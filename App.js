@@ -10,6 +10,36 @@ const Sign_password = document.getElementById("sign-password");
 const Sign_email = document.getElementById("sign-email");
 
 
+
+// Show password
+function showPasswordSign() {
+  const icon = document.getElementById("eye-icon")
+  if (icon.classList.contains("fa-eye")) {
+    Sign_password.type = 'text'
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  }
+  else{
+    Sign_password.type = 'password'
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
+  }
+}
+// Show password
+function showPasswordLogin() {
+  const icon = document.getElementById("eye-icon")
+  if (icon.classList.contains("fa-eye")) {
+    login_password.type = 'text'
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  }
+  else{
+    login_password.type = 'password'
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
+  }
+}
+
 // Login User handler-------------------------------------------
 const handleLogin = async (event) => {
   event.preventDefault();
@@ -20,24 +50,45 @@ const handleLogin = async (event) => {
       password: login_password.value,
     });
     if (error) {
-      alert(error.message);
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error"
+    });
       return;
     }
-    alert("Successfully signed in");
-    const setUserinfo = localStorage.setItem('userinfo', JSON.stringify(user));
-  const getInfo = JSON.parse(localStorage.getItem('userinfo'));
+
+    localStorage.setItem('userinfo', JSON.stringify(user));
+    const isFirstTime = !localStorage.getItem('hasLoggedInBefore');
     
-    const getID = localStorage.getItem('setID')
-    if (getID === getInfo.id) {
-      window.location.href = "home.html";
-    }
-    else{
-      window.location.href = "info.html";
-    }
+
+    Swal.fire({
+      title: "LogIn!",
+      text: "Successfully Signed in",
+      icon: "success"
+  });
+
+    setTimeout(()=>{
+
+      
+      if (isFirstTime) {
+        localStorage.setItem('hasLoggedInBefore', 'true'); // Mark as logged in
+        window.location.href = "info.html"; // Redirect to info page
+      } else {
+        window.location.href = "home.html"; // Redirect to home page
+      }
+    }, 1000)
+
   } catch (err) {
-    alert("unexpected error occurred please try again: ");
+    Swal.fire({
+      title: "Error!",
+      text: "unexpected error occurred please try again: ",
+      icon: "error"
+  });
   }
 };
+
+
 
 // Sign Up User Handler-------------------------------------------
 
@@ -49,15 +100,30 @@ const handleSignUp = async (event) => {
       password: Sign_password.value,
     });
     if (error) {
-      alert(error.message);
-      console.log(error);
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error"
+    });
       return;
     }
 
-    alert("Successfully signed up");
+    Swal.fire({
+      title: "SignUp!",
+      text: "Successfully Sign Up!",
+      icon: "success"
+  });
+
+  setTimeout(()=>{
     window.location.href = "index.html";
+  }, 1000)
+
   } catch (err) {
-    alert("unexpected error occurred please try again: ");
+    Swal.fire({
+      title: "Error!",
+      text: "unexpected error occurred please try again: ",
+      icon: "error"
+    })
   }
 };
 
@@ -179,10 +245,18 @@ const handleCreatePost = async() => {
   }])
 
   if (dbError) {
-    throw alert(`Database error: ${dbError.message}`);
+    Swal.fire({
+      title: "Error!",
+      text: dbError.message,
+      icon: "error"
+    })
   }
 
-  alert("Image uploaded and data saved successfully!");
+  Swal.fire({
+    title: "Uploaded!",
+    text: "Your Post uploaded successfully: ",
+    icon: "success"
+  })
 
   post_desc.value = '';
   document.getElementById("image_preview").src = '';
@@ -206,7 +280,11 @@ async function GetPostData() {
   .order("created_at", { ascending: false });
 
   if(error){
-    alert(error.message)
+    Swal.fire({
+      title: "Error!",
+      text: error.message,
+      icon: "error"
+    })
     return;
   }
 
@@ -298,6 +376,35 @@ GetPostData()
 
 
 
+
+// User_ActivePosts
+async function userActive (){
+  const user_div = document.getElementById('user_active');
+
+  const {data, error} = await supabase_Api
+  .from('user-information')
+  .select('*')
+
+  let div_element = '';
+
+  data?.forEach(element => {
+     div_element += `
+                    <div class="short_div">
+                      <div>
+                          <img src='${element.image_url}' alt="">
+                      </div>
+                      <span>
+                          ${element.user_name}
+                      </span>
+                  </div>
+    `
+  });
+  user_div.innerHTML += div_element
+
+}
+userActive()
+
+
 // Profile Information------------------------------------
 
  document.getElementById("info_dp")?.addEventListener("change", function (event) {
@@ -309,17 +416,46 @@ GetPostData()
 
 });
 
+
+const cover_bg = document.getElementById("cover_img");
+cover_bg?.addEventListener("click", () =>{
+  document.getElementById("cover_dp")?.click();
+  document.getElementById("cover_dp").addEventListener("change", function (event) {
+    const file = event.target.files[0];
+    if (file) {
+      const img = document.getElementById("change_cover");
+      img.src = URL.createObjectURL(file);
+    }
+  })
+})
+
 async function SetUserInformation (){
   const userName = document.getElementById('info_name')
   const userBio = document.getElementById('info_bio')
   const userDp = document.getElementById('info_dp').files[0]
+  const user_cover = document.getElementById('cover_dp').files[0]
  
-  if(userName.value.trim() === '' || userDp === undefined){
+  if(userName.value.trim() === '' || userDp === undefined || user_cover === undefined){
     alert("Please fill in all fields");
     return;
   }
   
   const getInfo = JSON.parse(localStorage.getItem('userinfo'));
+
+
+  
+  const filePathCover = `profile/${Date.now()}_${userDp.name}`;
+    
+  const { data: cover_data, error: cover_err } = await supabase_Api.storage
+  .from("blog-image")
+  .upload(filePathCover, user_cover);
+  if (cover_err) {
+    throw cover_err;
+    return;
+  }
+  const CoverUrl = supabase_Api.storage
+  .from('blog-image').getPublicUrl(filePathCover).data.publicUrl;
+
 
   const filePath = `profile/${Date.now()}_${userDp.name}`;
     
@@ -339,7 +475,8 @@ async function SetUserInformation (){
     image_url: imageUrl, 
     user_id: getInfo.id, 
     email: getInfo.email,
-    user_bio: userBio.value, 
+    user_bio: userBio.value,
+    cover_url: CoverUrl,
   }])
 
   const setID = localStorage.setItem('setID', getInfo.id)
@@ -348,7 +485,11 @@ async function SetUserInformation (){
     throw console.log(dbError);
   }
 
-  alert("Image uploaded and data saved successfully!");
+  Swal.fire({
+    title: "Created!",
+    text: "Your profile created successfully: ",
+    icon: "success",
+  })
   window.location.href = 'Home.html';
 
 }
@@ -366,31 +507,240 @@ async function UserProfileData () {
   .from('user-information')
   .select('*')
   .eq('user_id', getInfo.id)
-
-
+  
   if (error) {
-    console.error("Error fetching user:", error.message);
+    Swal.fire({
+      title: "Error!",
+      text: error.message,
+      icon: "error"
+      });
     return;
 }
+const {data: singleUser, error: singleUserError} = await supabase_Api
+.from('user-posts')
+.select('*')
+.eq('user_id', getInfo.id)
+
+if (singleUserError) {
+  Swal.fire({
+    title: "Error!",
+    text: singleUserError.message,
+    icon: "error"
+    });
+  return;
+}
+
+console.log(singleUser)
+
 
 const userStuff = data[0]
 
 const user_image = document.querySelectorAll('.user_image')
 const user_name = document.querySelectorAll('.user_infoName')
+const cover_img = document.getElementById('change_cover_dp')
 let user_bioTxt = document.getElementById('bio')
+let profile_wrapper = document.getElementById('ProfileContent_wrapper')
 user_image.forEach((ele)=>{
-  ele.src = userStuff.image_url;
+  ele.src = userStuff?.image_url;
 })
 
 user_name.forEach((ele)=>{
-  ele.textContent = userStuff.user_name;
+  ele.textContent = userStuff?.user_name;
 })
 
 if(user_bioTxt === null){
   return;
 }
 user_bioTxt.innerText= userStuff?.user_bio;
+cover_img.src = userStuff?.cover_url;
 
+
+
+function timeAgo(timestamp){
+  const postTime = timestamp;
+const now = new Date();
+const postDate = new Date(postTime)
+const seconds = Math.floor((now - postDate) / 1000)
+
+if (seconds < 60)return `${seconds} seconds ago`;
+
+const minutes = Math.floor(seconds / 60);
+if (minutes < 60)return `${minutes} minutes ago`;
+
+const hours = Math.floor(minutes / 60);
+if (hours < 24)return `${hours} hours ago`;
+
+const days = Math.floor(hours / 24);
+if (days < 7)return `${days} days ago`;
+
+const weeks = Math.floor(days / 7);
+if (weeks < 4)return `${weeks} weeks ago`;
+
+const months = Math.floor(days / 30);
+if (months < 12)return `${months} months ago`;
+}
+
+
+let AllPosts = '';
+singleUser.forEach((ele)=>{
+  const textTime = timeAgo(ele.created_at)
+  AllPosts += `
+  <div class="post_section">
+                    <div class="post_profile">
+                    <span class="post_dp">
+                        <img src=${ele.user_dp} alt="">
+                    </span>
+                    <div class="post_name">
+                        <p>${ele.user_name}</p>
+                        <span>${textTime}</span>
+                    </div>
+                    <span class="three-dots">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </span>
+
+                    <div class="event_modal" data-id="${ele.id}">
+                    <span>Update</span>
+                    <span>Delete</span>
+                    <span>Close</span>
+                    </div>
+                </div>
+                
+                <p class="post_para">${ele.caption}</p>
+                
+                
+                <div class="post_image">
+                    <img src=${ele.image_url} alt="">
+                </div>
+
+
+                <div class="post_events">
+                    <div>
+                        <span><i class="fa-regular fa-heart"></i></span>
+                        <span>150k</span>
+                    </div>
+                    <div>
+                        <span><i class="fa-regular fa-comment-dots"></i></span>
+                        <span>128</span>
+                    </div>
+                    <div>
+                        <span><i class="fa-regular fa-bookmark"></i></span>
+                        <span>183</span>
+                    </div>
+                    <span class="share"><i class="fa-regular fa-paper-plane"></i></span>
+                </div>
+                <!-- <div class="comment_section">
+                    <div class="comment_dp">
+                        <img class="user_image" src="./images/me.jpg" alt="">
+                    </div>
+                    <div class="comment_input">
+                        <input type="text" placeholder="Write your comment...">
+                    </div>
+                </div> -->
+            </div>
+  `
+ })
+
+ profile_wrapper.innerHTML = AllPosts;
+ 
+
+ profile_wrapper.addEventListener("click", async function (event) {
+  const target = event.target.closest(".three-dots")
+  const modal = event.target.closest(".event_modal");
+
+  
+  if(target){
+    const eventModal = target.nextElementSibling;
+
+    if(eventModal){
+      eventModal.style.display = eventModal.style.display === 'flex' ? 'none' : 'flex';
+    }
+  }
+
+  if(modal && event.target.textContent === 'Delete'){
+    const postId = modal.getAttribute("data-id");
+
+    const { data: dltPost, error: dltError } = await supabase_Api
+      .from("user-posts")
+      .delete()
+      .eq("id", postId);
+  
+    if (dltError) {
+      Swal.fire({
+        title: "Error!",
+        text: "Unexpected error occurred, please try again.",
+        icon: "error"
+      });
+      return;
+    }
+  
+    Swal.fire({
+      title: "Deleted!",
+      text: "Post has been deleted.",
+      icon: "success"
+    });
+    
+    modal.style.display = 'none';
+
+  }
+
+  if(modal && event.target.textContent === 'Update'){
+    const postId = modal.getAttribute("data-id");
+
+    if (!postId) {
+        Swal.fire({
+          title: "Error!",
+          text: "Could not find the post ID.",
+          icon: "error",
+        });
+        return;
+      }
+    
+      let userUpdated = prompt("Please enter your update caption:")
+    
+      const { error } = await supabase_Api
+      .from('user-posts')
+      .update({ caption: userUpdated })
+      .eq('id', postId)
+    
+     if(error){
+      Swal.fire({
+        title: "Error!",
+        text: error.message,
+        icon: "error",
+      });
+      return;
+     }
+     modal.style.display = 'none';
+  }
+
+  if(modal && event.target.textContent === 'Close'){
+    modal.style.display = 'none';
+  }
+
+
+
+  // if (!postId) {
+  //   Swal.fire({
+  //     title: "Error!",
+  //     text: "Could not find the post ID.",
+  //     icon: "error",
+  //   });
+  //   return;
+  // }
+
+  // let userUpdated = prompt("Please enter your update caption:")
+
+  // const { error } = await supabase_Api
+  // .from('user-posts')
+  // .update({ caption: userUpdated })
+  // .eq('id', postId)
+
+  // console.log(error)
+
+  // 
+
+  // console.log("Deleted post ID:", postId);
+});
 
 }
 

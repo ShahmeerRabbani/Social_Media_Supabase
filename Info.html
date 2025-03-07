@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <title>Together</title>
 </head>
 <body>
@@ -16,13 +17,19 @@
             <p>Upload your Profile information and photo</p>
             </div>
             <div class="img_div">
+                <div class="cover_dp" id="cover_img">
+                    <img src="./images/cover_img.jpg" alt="" id="change_cover">
+                    <input type="file" accept="jpeg/*,jpg/*" style="display: none;" id="cover_dp" >
+                </div>
                 <div class="camera" ><i class="fa-solid fa-camera"></i></div>
                 <input type="file" accept="jpeg/*,jpg/*" style="display: none;" id="info_dp" >
                 <div class="image_circle" onclick="document.getElementById('info_dp').click()">
-                    <img id="change_img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3puR9z5lh7UbRRX9EIJkHYQTaLHnnZIQ7dALWbUH1qsgjnuBuZ7GKK7iCh2AGH0fCGVI&usqp=CAU" alt="Profile Picture">
+                    <img id="change_img" 
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3puR9z5lh7UbRRX9EIJkHYQTaLHnnZIQ7dALWbUH1qsgjnuBuZ7GKK7iCh2AGH0fCGVI&usqp=CAU"
+                     alt="Profile Picture">
 
                 </div>
-                <a href="#" style="color: #0861f2;"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload a photo</a>
+                <a href="#" style="color: #0861f2; z-index: 11;"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload a photo</a>
             </div>
             <div class="profile_info">
                 <input type="text" name="" id="info_name" placeholder="Full name">
